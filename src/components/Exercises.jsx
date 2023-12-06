@@ -3,17 +3,18 @@ import ExerciseCard from './ExerciseCard';
 import Pagination from '@mui/material/Pagination';
 import { Box, Stack, Typography } from '@mui/material';
 import { exerciseOptions, fetchData } from '../utils/fetchData';
+import Loader from './Loader';
 
 function Exercises({ exercises, setExercises, bodyPart }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const exercisesPerPage = 3;
-  const indexOfLastExercise = currentPage * exercisesPerPage; // 3
-  const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage; // 0
+  const indexOfLastExercise = currentPage * exercisesPerPage;
+  const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
 
   const currentExercises = exercises.slice(
-    indexOfFirstExercise, // 0
-    indexOfLastExercise // 3
+    indexOfFirstExercise,
+    indexOfLastExercise
   );
 
   const paginate = (e, value) => {
@@ -57,9 +58,13 @@ function Exercises({ exercises, setExercises, bodyPart }) {
         flexWrap="wrap"
         justifyContent="center"
       >
-        {currentExercises.map((exercise, index) => (
-          <ExerciseCard key={exercise.id} exercise={exercise} />
-        ))}
+        {currentExercises.length ? (
+          currentExercises.map((exercise) => (
+            <ExerciseCard key={exercise.id} exercise={exercise} />
+          ))
+        ) : (
+          <Loader />
+        )}
       </Stack>
       <Stack mt="100px" alignItems="center">
         {exercises.length > 4 && (
