@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  Alert,
+} from '@mui/material';
 import { fetchData, exerciseOptions } from '../utils/fetchData';
 import HorizontalScrollbar from './HorizontalScrollbar';
 
 function SearchExercises({ setExercises, bodyPart, setBodyPart }) {
   const [search, setSearch] = useState('');
   const [bodyParts, setBodyParts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchExercisesData = async () => {
@@ -37,13 +45,9 @@ function SearchExercises({ setExercises, bodyPart, setBodyPart }) {
 
         setSearch('');
         setExercises(searchedExercise);
-      } else {
-        //! Bura narmalni error message qoy!!!
-        alert('Axtardiginiz sistemde movcud deyil!');
       }
     } else {
-      //! Bura narmalni error message qoy!!!
-      alert('Axtarish detallarini yaz bled!');
+      setError('Please enter a search term!');
     }
   };
 
@@ -85,6 +89,15 @@ function SearchExercises({ setExercises, bodyPart, setBodyPart }) {
         >
           Search
         </Button>
+        {error && (
+          <Alert
+            severity="error"
+            sx={{ mt: '5px' }}
+            onClose={() => setError(null)}
+          >
+            {error}
+          </Alert>
+        )}
       </Box>
       <Box sx={{ position: 'relative', width: '100%', p: '20px' }}>
         <HorizontalScrollbar
